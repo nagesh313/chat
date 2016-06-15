@@ -23,13 +23,12 @@ app.get('/', function (req, res) {
 app.get('/api/chat', chatController.list);
 app.post('/api/chat', chatController.addChat);
 io.on('connection', function (socket) {
-    console.log('I\'m Listening tooooo...');
-    socket.emit('news', {
-        hello: 'world'
-    });
-    socket.on('my other event', function (data) {
-        console.log('I\'m Listening tooooo my other event...');
+
+    socket.on('New Chat', function (data) {
+        console.log('New Chat');
         console.log(data);
+        socket.broadcast.emit('Chat BroadCast', data);
+
     });
 });
 /*var express = require('express'),
