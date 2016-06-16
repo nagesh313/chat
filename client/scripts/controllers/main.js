@@ -23,6 +23,9 @@ angular.module('chatApp', ['ngResource'])
             addNewText($scope.chatText);
             $scope.chatText = "";
         };
+		 $scope.submitUser = function () {
+			socket.emit('New User', $scope.userName);
+		};
         var printChat = function (text) {
             var list = document.getElementById('chats');
             var newLI = document.createElement('li');
@@ -31,11 +34,21 @@ angular.module('chatApp', ['ngResource'])
             setTimeout(function () {
                 newLI.className = newLI.className + " show";
             }, 10);
-
         };
+		var addUser = function(data){
+		var list = document.getElementById('userList');
+		 var newLI = document.createElement('li');
+		 newLI.innerHTML = '<p>' + data.userName +' - '+data.joiningTime+ '</p>';
+		 list.appendChild(newLI);
+		}
+		
         socket.on('Chat BroadCast', function (data) {
             console.log('Chat BroadCast');
             printChat(data);
+        });
+		socket.on('New User', function (data) {
+            console.log('New User');
+            addUser(data);
         });
         var addNewText = function (text) {
             var chat = new Chat();
